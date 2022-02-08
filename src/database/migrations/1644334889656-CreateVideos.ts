@@ -1,43 +1,56 @@
 import {MigrationInterface, QueryRunner, Table} from "typeorm";
 
-export class CreateCategories1644333254035 implements MigrationInterface {
+export class CreateVideos1644334889656 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
 
         await queryRunner.createTable(
             new Table({
-                name: "categories",
+                name: "videos",
                 columns: [
                     {
                         name: "id",
                         type: "uuid",
-                        isPrimary: true
+                        isPrimary: true,
                     },
                     {
                         name: "name",
                         type: "varchar",
-                        isUnique: true
+                        isUnique: true,
                     },
                     {
                         name: "description",
                         type: "varchar",
                     },
                     {
+                        name: "category_id",
+                        type: "uuid",
+                    },
+                    {
+                        name: "duration",
+                        type: "numeric",
+                    },
+                    {
                         name: "created_at",
                         type: "timestamp",
-                        default: "now()"
+                        default: "now()",
+                    }
+                ],
+                foreignKeys: [
+                    {
+                        name: "fk_videos_category",
+                        columnNames: ["category_id"],
+                        referencedTableName: "categories",
+                        referencedColumnNames: ["id"]
                     }
                 ]
             })
         )
-
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        
-        //warning, run this just if you want drop  categories table. 
-        //Be careful young padwan
-        await queryRunner.dropTable("categories")
+
+        await queryRunner.dropTable("videos")
     }
 
 }
